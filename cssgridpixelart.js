@@ -1,28 +1,25 @@
-function cssGridPixelArt(url){
-  loadIconsFromServer(url, drawCanvas);
+/*jshint esversion: 6 */
+
+document.addEventListener('DOMContentLoaded', function () {main();});
+
+
+function main() {
+  loadIconsFromServer('https://www.slothcrew.com/playground/icons.json');
+  
 }
 
-
-function loadIconsFromServer(url, callDrawCanvas){
-
-  var getPixelArtObjectRequest = new XMLHttpRequest();
-
-  getPixelArtObjectRequest.open("GET", url, true);
-  getPixelArtObjectRequest.send();
-  getPixelArtObjectRequest.onreadystatechange = function(){
-    
-    if (this.readyState == 4 && this.status == 200) {
-      
-      callDrawCanvas(getPixelArtObjectRequest.responseText);
-
-    }
-
-  };
-}
+const loadIconsFromServer = url=> {
+  
+  fetch(url)
+    .then(res => res.text())
+    .then(body => {
+      drawCanvas(body);
+    });
+};
 
 
 
-function drawCanvas(loadIconsFromServerResponse) {
+const drawCanvas = loadIconsFromServerResponse => {
 
   imgPixel = JSON.parse(loadIconsFromServerResponse);
   var i = imgPixel.length;
@@ -37,7 +34,7 @@ function drawCanvas(loadIconsFromServerResponse) {
 
 
 
-function styleCanvas(className, canvasHeight, canvasWidth) {
+const styleCanvas = (className, canvasHeight, canvasWidth) => {
   var canvasStyleSizePosition = "height:20vh; width:20vh; margin:0 auto;"
   var canvasStyleDisplay = "display:grid;" 
   var canvasStyleGridColumns = "grid-template-columns:repeat(" + canvasHeight + ", 1fr);"
@@ -55,7 +52,7 @@ function styleCanvas(className, canvasHeight, canvasWidth) {
 
 
 
-function drawIcon(className, row, column, pixelOn) {
+const drawIcon = (className, row, column, pixelOn) => {
 
   var gridDivStyle = [];
   var iconNameCount = document.getElementsByClassName(className);
